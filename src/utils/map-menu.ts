@@ -68,4 +68,40 @@ export function pathMapToMenu(
   }
 }
 
+// 映射按钮权限
+export function mapMenuToPermissions(userMenu: any[]) {
+  const permissions: string[] = []
+
+  const _recruseGetPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      // 如果菜单类型为一级或者二级，则继续遍历（本次按钮权限放在3级的）
+      if (menu.type === 1 || menu.type === 2) {
+        _recruseGetPermission(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission)
+      }
+    }
+  }
+  _recruseGetPermission(userMenu)
+
+  return permissions
+}
+
+// 找出权限树的所有叶子节点
+export function getMenuLeafKeys(menuList: any[]) {
+  const leafKeys: number[] = []
+
+  const _recruseGetLeaf = (menuList: any[]) => {
+    for (const menu of menuList) {
+      if (menu.children) {
+        _recruseGetLeaf(menu.children)
+      } else {
+        leafKeys.push(menu.id)
+      }
+    }
+  }
+  _recruseGetLeaf(menuList)
+  return leafKeys
+}
+
 export { firstMenu }

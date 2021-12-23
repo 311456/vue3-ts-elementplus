@@ -4,7 +4,7 @@ export const contentTableConfig = {
     { prop: 'name', label: '姓名', minWidth: '100' },
     { prop: 'realname', label: '真实姓名', minWidth: '100' },
     { prop: 'cellphone', label: '电话号码', minWidth: '120' },
-    { prop: 'enable', label: '状态', minWidth: '100', slotName: 'status' },
+    { prop: 'enable', label: '状态', minWidth: '100', slotName: 'enable' },
     {
       prop: 'createAt',
       label: '创建时间',

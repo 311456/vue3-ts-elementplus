@@ -12,6 +12,7 @@ const hxRequest = new HXRequest({
       // 携带token的拦截
       const token = localCache.getCache('token')
       if (token && config.headers) {
+        // bearer承载：http协议的标准认证方式。
         config.headers.Authorization = `Bearer ${token}`
       }
       // console.log('request success')

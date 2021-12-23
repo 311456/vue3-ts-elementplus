@@ -15,7 +15,10 @@
           <el-dropdown-item icon="el-icon-moon-night"
             >系统管理</el-dropdown-item
           >
-          <el-dropdown-item divided icon="el-icon-error"
+          <el-dropdown-item
+            divided
+            icon="el-icon-error"
+            @click="handleExitClick"
             >退出登录</el-dropdown-item
           >
         </el-dropdown-menu>
@@ -26,16 +29,27 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useStore } from '@/store'
+import LocalCache from '@/utils/cache'
 
 export default defineComponent({
   setup() {
     const store = useStore()
     // 也可以获取头像的url，不过该数据库里没有设计
     const name = computed(() => store.state.loginModule.userInfo.name)
+    const router = useRouter()
+    const handleExitClick = () => {
+      // 退出登录时删除本地缓存的一些数据
+      LocalCache.deleteCache('token')
+      LocalCache.deleteCache('userInfo')
+      LocalCache.deleteCache('userMenu')
+      router.push('/main')
+    }
     return {
-      name
+      name,
+      handleExitClick
     }
   }
 })

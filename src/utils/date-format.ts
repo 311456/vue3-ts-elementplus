@@ -8,7 +8,8 @@ export function formatUtcTime(
   utcString: string,
   format: string = DATE_TIME_FORMAT
 ) {
-  return dayjs.utc(utcString).format(format)
+  // 默认是0时区的时间，但是我们是在东八区，所以需要加上8个小时
+  return dayjs.utc(utcString).utcOffset(8).format(format)
 }
 
 // 时间戳格式化

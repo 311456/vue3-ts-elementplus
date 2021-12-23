@@ -6,3 +6,5 @@ declare module '*.vue' {
 }
 
 declare let $store: any
+// 声明json文件
+declare module '*.json'

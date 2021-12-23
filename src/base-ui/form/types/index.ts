@@ -10,6 +10,8 @@ export interface IformItem {
   options?: any[]
   // 针对特殊属性
   otherOptions?: any
+  // 是否显示密码框
+  isHidden?: boolean
 }
 
 // hx-form可以接收的参数

@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import { Edit, Loading, Delete, Check } from '@element-plus/icons'
 import 'normalize.css'
 
 import './assets/css/index.less'
@@ -21,6 +22,13 @@ app.use(globalRegister)
 app.use(ElementPlus, {
   locale: zhCn
 })
+// "element-plus": "^1.1.0-beta.20"的fontIcon全局注册
+app
+  .component('edit', Edit)
+  .component('loading', Loading)
+  .component('delete', Delete)
+  .component('check', Check)
+
 app.use(store)
 // 用户登录后刷新，重新存储vuex的数据,动态注册路由
 setupStore()

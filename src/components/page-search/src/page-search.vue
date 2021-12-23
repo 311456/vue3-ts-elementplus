@@ -6,10 +6,18 @@
         </template> -->
       <template #footer>
         <div class="handle-btn">
-          <el-button type="primary" icon="el-icon-s-promotion" size="medium"
+          <el-button
+            type="primary"
+            icon="el-icon-s-promotion"
+            size="medium"
+            @click="handleResetClick"
             >清空</el-button
           >
-          <el-button type="primary" icon="el-icon-search" size="medium"
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            size="medium"
+            @click="handleQueryClick"
             >搜索</el-button
           >
         </div>
@@ -33,16 +41,33 @@ export default defineComponent({
   components: {
     HxForm
   },
-  setup() {
-    const formData = ref({
-      id: '',
-      password: '',
-      fruit: '',
-      createTime: '',
-      name: ''
-    })
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(props, { emit }) {
+    // 双向绑定的属性应该根据配置文件的field动态决定
+    const formItems = props.searchFormConfig.formItems ?? []
+    const searchFormData: any = {}
+    for (const item of formItems) {
+      // 将field作为key存入对象中，动态生成对应的属性
+      searchFormData[item.field] = ''
+    }
+    const formData = ref(searchFormData)
+
+    // 处理重置操作
+    const handleResetClick = () => {
+      for (const key in searchFormData) {
+        formData.value[`${key}`] = searchFormData[key]
+      }
+      emit('resetBtnClick')
+    }
+
+    // 处理搜索按钮
+    const handleQueryClick = () => {
+      emit('queryBtnClick', formData.value)
+    }
     return {
-      formData
+      formData,
+      handleResetClick,
+      handleQueryClick
     }
   }
 })

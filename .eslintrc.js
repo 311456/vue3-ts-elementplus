@@ -20,6 +20,7 @@ module.exports = {
     // 以下为代码书写过程所遇警告，，影响不大故将此关闭
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off'
   }
 }

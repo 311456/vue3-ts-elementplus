@@ -3,35 +3,47 @@ import { Iform } from '@/base-ui/form/types'
 export const searchFormConfig: Iform = {
   formItems: [
     {
-      field: 'id',
+      field: 'name',
       type: 'input',
-      label: 'id',
-      placeholder: '请输入id~'
+      label: '姓名',
+      placeholder: '请输入姓名'
     },
     {
-      field: 'password',
-      type: 'password',
-      label: '密码',
-      placeholder: '请输入密码'
+      field: 'realname',
+      type: 'input',
+      label: '真实姓名',
+      placeholder: '请输入真实姓名'
     },
     {
-      field: 'fruit',
+      field: 'cellphone',
+      type: 'input',
+      label: '电话号码',
+      placeholder: '请输入电话号码'
+    },
+    // {
+    //   field: 'password',
+    //   type: 'password',
+    //   label: '密码',
+    //   placeholder: '请输入密码'
+    // },
+    {
+      field: 'enable',
       type: 'select',
-      label: '爱好',
-      placeholder: '请选择爱好',
+      label: '状态',
+      placeholder: '请选择状态',
       options: [
         {
-          name: 'apple',
-          value: '苹果'
+          name: '启用',
+          value: 1
         },
         {
-          name: 'banana',
-          value: '香蕉'
+          name: '禁用',
+          value: 0
         }
       ]
     },
     {
-      field: 'createTime',
+      field: 'createAt',
       type: 'date',
       label: '创建时间',
       otherOptions: {
@@ -39,12 +51,6 @@ export const searchFormConfig: Iform = {
         endPlaceholder: '结束时间',
         type: 'daterange'
       }
-    },
-    {
-      field: 'name',
-      type: 'input',
-      label: '名称',
-      placeholder: '请输入名称'
     }
   ],
   // label文字显示的宽度

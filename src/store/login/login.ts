@@ -10,7 +10,7 @@ import { IRootState } from '../types'
 import { IAccount } from '@/service/login/types'
 import LocalCache from '../../utils/cache'
 import router from '@/router'
-import { mapMenuToRoutes } from '@/utils/map-menu'
+import { mapMenuToRoutes, mapMenuToPermissions } from '@/utils/map-menu'
 
 // module必须传入2个泛型。s:state的类型。R：根的类型
 const loginModule: Module<ILoginState, IRootState> = {
@@ -19,7 +19,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenu: []
+      userMenu: [],
+      permissions: []
     }
   },
   getters: {},
@@ -39,10 +40,15 @@ const loginModule: Module<ILoginState, IRootState> = {
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+
+      // 获取用户的按钮权限
+      const permissions = mapMenuToPermissions(userMenu)
+      // console.log(permission)
+      state.permissions = permissions
     }
   },
   actions: {
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // console.log('login module', payload)
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
@@ -51,6 +57,9 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 存储token（jwt生成的）到vuex
       commit('changeToken', token)
       LocalCache.setCache('token', token)
+
+      // 初始化相关信息,发射根组件的action
+      dispatch('getInitialDataAction', null, { root: true })
 
       // 2.请求用户信息（需要验证token）
       const userInfoResult = await requestUserInfoById(id)
@@ -72,11 +81,12 @@ const loginModule: Module<ILoginState, IRootState> = {
     // }
 
     // 用户登录后刷新，重新设置vuex的数据。（vuex数据存储在内存里，刷新会清除）
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = LocalCache.getCache('token')
       if (token) {
         // 修改state最好使用mutation
         commit('changeToken', token)
+        dispatch('getInitialDataAction', null, { root: true })
       }
       const userInfo = LocalCache.getCache('userInfo')
       if (token) {

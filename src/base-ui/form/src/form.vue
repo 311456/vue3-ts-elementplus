@@ -6,8 +6,10 @@
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
             <el-form-item
+              v-if="!item.isHidden"
               :label="item.label"
               :rules="item.rules"
+              :prop="item.field"
               :style="itemStyle"
             >
               <!-- 输入框以及密码框 -->
@@ -18,7 +20,8 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
                   v-bind="item.otherOptions"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 ></el-input>
               </template>
               <!-- 下拉框 -->
@@ -27,13 +30,14 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 >
                   <el-option
                     :value="sItem.value"
                     v-for="sItem in item.options"
-                    :key="sItem.name"
-                    >{{ sItem.value }}</el-option
+                    :key="sItem.value"
+                    >{{ sItem.name }}</el-option
                   >
                 </el-select>
               </template>
@@ -42,7 +46,8 @@
                 <el-date-picker
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -55,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import { IformItem } from '@/base-ui/form/index'
 
@@ -94,18 +99,32 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    // 此时的formData是一个解构出来的新的对象，而且通过ref使其成为了一个响应式的数据
-    const formData = ref({ ...props.modelValue })
-    watch(
-      // 监听formData的变化，然后将事件以及新的值发射到外部绑定的组件中
-      formData,
-      (newValue) => {
-        emit('update:modelValue', newValue)
-      },
-      { deep: true }
-    )
+    // 以下方法在点击编辑后，page-modal新的formData值没有传递到HX-form中。HX-form中只会绑定第一个传入的值
+    // 此时的formData是一个解构出来的新的对象(浅拷贝)，而且通过ref使其成为了一个响应式的数据
+    // v-model="formData[`${item.field}`]"
+    // const formData = ref({ ...props.modelValue })
+    // watch(
+    // 监听formData的变化，然后将事件以及新的值发射到外部绑定的组件中
+    //   formData,
+    //   (newValue) => {
+    //     emit('update:modelValue', newValue)
+    //   },
+    //   { deep: true }
+    // )
+
+    // 以上方法在pageSearch、HxForm、单个数据 之间的数据传递都使用的双向绑定，这使得处理起来会很麻烦
+    // 另外一种处理重置的思路：不使用v-model。使用原生的值绑定和事件绑定
+    // :model-value ="modelValue[`${item.field}`]"
+    // @update:modelValue="handleValueChange($event,item.field)"
+
+    const handleValueChange = (value: any, field: string) => {
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
+
+    // pageSearch处理事件发射：const handleResetClick = ()=>{formData.value = searchFormData}
+
     return {
-      formData
+      handleValueChange
     }
   }
 })
