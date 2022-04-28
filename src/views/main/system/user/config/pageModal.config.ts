@@ -6,20 +6,16 @@ export const pageModalConfig: Iform = {
       field: 'name',
       type: 'input',
       label: '姓名',
-      placeholder: '请输入姓名',
-      rules: [
-        {
-          required: true,
-          message: 'Please input Activity name',
-          trigger: 'blur'
-        },
-        {
-          min: 3,
-          max: 5,
-          message: 'Length should be 3 to 5',
-          trigger: 'blur'
-        }
-      ]
+      placeholder: '请输入姓名'
+      // 验证规则有问题，必传验证可以，但是填写了值之后却验证不了
+      // * 推测是因为使用的是表单的原生值绑定，element plus 内部验证不了
+      // rules: [
+      //   {
+      //     required: true,
+      //     message: '请输入您的姓名',
+      //     trigger: 'blur'
+      //   }
+      // ]
     },
     {
       field: 'realname',

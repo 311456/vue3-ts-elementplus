@@ -20,7 +20,7 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
                   v-bind="item.otherOptions"
-                  :model-value="modelValue[`${item.field}`]"
+                  :model-value="modelValue[item.field]"
                   @update:modelValue="handleValueChange($event, item.field)"
                 ></el-input>
               </template>

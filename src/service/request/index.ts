@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElLoading, ILoadingInstance } from 'element-plus'
 
-const DEFAULT_LOADING = true
+const DEFAULT_LOADING = false
 //3.逐步传值 responseInterceptor?: (res: T) => T
 interface HXRequestInterceptors<T = AxiosResponse> {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig

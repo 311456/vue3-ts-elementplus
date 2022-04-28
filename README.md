@@ -25,14 +25,17 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 代码提交：
 
+### 将代码添加至缓存区
 ```
 git add .
 ```
 
+### 将缓存区的代码提交至本地仓库
 ```
 npx cz
 ```
 
+### 提交本地仓库的代码至远程仓库
 ```
 git push
 ```

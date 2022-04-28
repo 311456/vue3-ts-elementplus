@@ -1,6 +1,6 @@
 <template>
   <div class="chat">
-    <h2>chat</h2>
+    <el-empty description="该页面待完善~" />
   </div>
 </template>
 

@@ -180,7 +180,7 @@ export default defineComponent({
             message: h(
               'h3',
               { style: 'color: red' },
-              `操作失败，请重试!错误信息：${err}`
+              `操作失败，请重试!错误信息:${err}`
             ),
             position: 'top-left'
           })

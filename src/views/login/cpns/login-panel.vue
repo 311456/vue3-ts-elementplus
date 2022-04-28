@@ -52,11 +52,11 @@ export default defineComponent({
     const handleLoginClick = () => {
       // 账号登录逻辑
       if (currentTab.value === 'account') {
-        console.log('click accoutn loginBtn', isKeepPassword.value)
+        // console.log('click accoutn loginBtn', isKeepPassword.value)
         accountRef.value?.loginAction(isKeepPassword.value)
       } else {
         // 手机登录逻辑
-        console.log('click phone loginBtn', isKeepPassword.value)
+        // console.log('click phone loginBtn', isKeepPassword.value)
         phoneRef.value?.loginAction(isKeepPassword.value)
       }
     }

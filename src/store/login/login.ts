@@ -52,7 +52,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       // console.log('login module', payload)
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
-      console.log(loginResult)
+      // console.log(loginResult)
       const { id, token } = loginResult.data
       // 存储token（jwt生成的）到vuex
       commit('changeToken', token)
