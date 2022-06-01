@@ -14,6 +14,7 @@ const hxRequest = new HXRequest({
       if (token && config.headers) {
         // bearer承载：http协议的标准认证方式。
         config.headers.Authorization = `Bearer ${token}`
+        console.log(config)
       }
       // console.log('request success')
       return config
