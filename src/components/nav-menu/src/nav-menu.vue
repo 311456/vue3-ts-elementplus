@@ -132,7 +132,7 @@ export default defineComponent({
   }
   // 一级标题的样式。因为通过插槽渲染的数据必须要要通过深度选择才可以访问到
   // [@vue/compiler-sfc] ::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.
-  ::v-deep .el-sub-menu__title {
+  :deep(.el-sub-menu__title) {
     background-color: #001529 !important;
   }
   // hover高亮hlkji
