@@ -1,6 +1,6 @@
 <template>
   <div class="chat">
-    <el-empty description="该页面待完善~" />
+    <el-empty description="获取更多学习笔记欢迎关注微信公众号：安酱xx" />
   </div>
 </template>
 
