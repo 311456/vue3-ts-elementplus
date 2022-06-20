@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, WatchEffect, ref, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 // highlight 如何显示行号？
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
@@ -27,7 +27,9 @@ export default defineComponent({
     const highlightedCode = ref<string>('')
 
     watchEffect(() => {
-      highlightedCode.value = hljs.highlight(props.code, { language: props.language }).value
+      highlightedCode.value = hljs.highlight(props.code, {
+        language: props.language
+      }).value
     })
 
     return {
