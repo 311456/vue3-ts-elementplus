@@ -1,165 +1,126 @@
 <template>
   <div class="overview">
-    <!-- 使用图标时必须要进行组件注册，全局注册或者局部注册都可以 -->
-    <el-icon class="is-loading" :size="30" color="blue">
-      <loading />
-    </el-icon>
-    <el-icon :size="30">
-      <edit />
-    </el-icon>
-    <delete style="width: 1em; height: 1em; margin-right: 8px" />
-    <el-icon><check /></el-icon>
-    <!-- svg图标源码 -->
-    <!-- <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1024 1024"
-      data-v-394d1fd8=""
-    >
-      <path
-        fill="currentColor"
-        d="M512 832a320 320 0 1 0 0-640 320 320 0 0 0 0 640zm0 64a384 384 0 1 1 0-768 384 384 0 0 1 0 768z"
-      ></path>
-      <path
-        fill="currentColor"
-        d="m292.288 824.576 55.424 32-48 83.136a32 32 0 1 1-55.424-32l48-83.136zm439.424 0-55.424 32 48 83.136a32 32 0 1 0 55.424-32l-48-83.136zM512 512h160a32 32 0 1 1 0 64H480a32 32 0 0 1-32-32V320a32 32 0 0 1 64 0v192zM90.496 312.256A160 160 0 0 1 312.32 90.496l-46.848 46.848a96 96 0 0 0-128 128L90.56 312.256zm835.264 0A160 160 0 0 0 704 90.496l46.848 46.848a96 96 0 0 1 128 128l46.912 46.912z"
-      ></path>
-    </svg> -->
-    <div
-      ref="divRef"
-      :style="{ width: '850px', height: '500px', margin: '30px' }"
-    ></div>
+    <hx-card title="关于">
+      <div class="c-left">
+        Vue3-ts-cms 是基于 Vue3、Vuex、VueRouter、 ElementPlus
+        、TypeScript、Echart5 等后台系统解决方案。
+      </div>
+    </hx-card>
+
+    <hx-card title="技术栈">
+      <hx-text-link :text-arrs="technologyStacks" />
+      <hx-descriptions
+        title="生产环境依赖"
+        :column="2"
+        :table-datas="dependencies"
+      />
+
+      <hx-descriptions
+        title="开发环境依赖"
+        :column="2"
+        :table-datas="devDependencies"
+      />
+    </hx-card>
+    <hx-card title="项目结构">
+      <div class="c-left">
+        <hx-code language="bash" :code="projectDir" />
+      </div>
+    </hx-card>
+    <hx-card title="项目规范">
+      <hx-descriptions
+        title="文件命名规范"
+        :column="1"
+        :table-datas="[
+          { name: '文件夹', description: '统一小写, 多个单词使用-分割' },
+          {
+            name: '文件(.ts .vue .json .d.ts)',
+            description: '统一小写, 多个单词使用-分割'
+          }
+        ]"
+      />
+      <hx-descriptions
+        title="编写组件规范"
+        :column="1"
+        :table-datas="[
+          { name: '组件的文件', description: '统一小写, 多个单词使用-分割' },
+          {
+            name: '组件的目录结构',
+            description:
+              '例如 button 组件：button/src/index.vue, 统一在button/index.ts导出'
+          },
+          {
+            name: '组件导包顺序',
+            description:
+              '导vue技术栈的包 , 导第三方的工具函数 , 导本地的组件, 导本地的工具函数'
+          },
+          { name: '组件的名称', description: '统一大写开头，驼峰命名' },
+          {
+            name: '组件属性顺序',
+            description: 'name, components, props, emits, setup ...'
+          },
+          {
+            name: 'template标签',
+            description: '小写加 - ( 例如：<case-panel/> )'
+          },
+          {
+            name: 'template标签属性顺序',
+            description: 'v-if , v-for , ref, class, style, ... ,事件'
+          },
+          {
+            name: '组件的props',
+            description: '小写开头，驼峰命名，必须编写类型默认值'
+          },
+          {
+            name: '组件的样式',
+            description:
+              '作用域：scoped, lang = scss / less  ; 类名：统一小写, 多个单词使用-分割'
+          }
+        ]"
+      />
+    </hx-card>
+
+    <hx-card title="Git提交规范">
+      <hx-descriptions
+        :column="1"
+        :table-datas="[
+          { name: 'add 操作', description: 'git add ' },
+          { name: 'commit 操作', description: 'npx cz ' },
+          { name: 'pull 操作', description: 'git pull ' },
+          { name: 'push 操作', description: 'git push ' }
+        ]"
+      />
+    </hx-card>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent } from 'vue'
 
-// 因为echarts在导出时没有默认将整个对象导出，而是使用 export {}的方式，所以要导入整个对象需要使用export *
-import * as echarts from 'echarts'
+import HxDescriptions from '@/base-ui/descriptions'
+import HxTextLink from '@/base-ui/text-link'
+import HxCode from '@/base-ui/code'
+import HxCard from '@/components/card'
 
+import {
+  technologyStacks,
+  dependencies,
+  devDependencies,
+  projectDir
+} from './p-config'
 export default defineComponent({
-  name: 'overview',
-  setup() {
-    const divRef = ref<HTMLElement>()
-    // 在setup中，获取ref实例时，该实列还没有绑定到ref中，所以使用生命周期钩子
-    onMounted(() => {
-      // 第二个参数：可传theme：light、dark
-      // 第三个参数：可传{renderer:'canvas'}或者{renderer:'svg'}
-      // 1.初始化一个echarts实例
-      const echartInstance = echarts.init(divRef.value!)
-      // 2.编写配置文件
-      const option = {
-        // 图表名称。也可以设置二级标题，详细可查官方文档
-        title: {
-          text: 'Stacked Area Chart'
-        },
-        // 某种情况是否显示特殊效果
-        tooltip: {
-          // 坐标轴触发
-          trigger: 'axis',
-          // 坐标线
-          axisPointer: {
-            // cross、line、shadow
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
-        },
-        // 图例，及每种图形对应的数据。不写也可以，根据后面series的name来决定
-        legend: {
-          data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-        },
-        // 工具栏：下载图片，转换数据等
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        // x轴
-        xAxis: [
-          {
-            type: 'category',
-            boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-          }
-        ],
-        // 一般不设置，可根据数据自动设置
-        yAxis: [
-          {
-            type: 'value'
-          }
-        ],
-        series: [
-          {
-            name: 'Email',
-            // 数据的类型：bar、line、pie。。。
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-              focus: 'series'
-            },
-            data: [120, 132, 101, 134, 90, 230, 210]
-          },
-          {
-            name: 'Union Ads',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-              focus: 'series'
-            },
-            data: [220, 182, 191, 234, 290, 330, 310]
-          },
-          {
-            name: 'Video Ads',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-              focus: 'series'
-            },
-            data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-            name: 'Direct',
-            type: 'line',
-            stack: 'Total',
-            areaStyle: {},
-            emphasis: {
-              focus: 'series'
-            },
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: 'Search Engine',
-            type: 'line',
-            stack: 'Total',
-            label: {
-              show: true,
-              position: 'top'
-            },
-            areaStyle: {},
-            emphasis: {
-              focus: 'series'
-            },
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-          }
-        ]
-      }
-      // 3.设置配置，并且开始绘制
-      echartInstance.setOption(option)
-    })
+  components: {
+    HxDescriptions,
+    HxCard,
+    HxTextLink,
+    HxCode
+  },
 
+  setup() {
     return {
-      divRef
+      technologyStacks,
+      dependencies,
+      devDependencies,
+      projectDir
     }
   }
 })
@@ -167,6 +128,25 @@ export default defineComponent({
 
 <style scoped lang="less">
 .overview {
-  width: 100%;
+  .c-left {
+    text-align: left;
+  }
+
+  .el-card {
+    margin-bottom: 20px;
+    // ::v-deep 重写 element-plus 样式
+    &:deep(.el-card__header span) {
+      // ::v-deep .el-card__header span {
+      font-weight: 700;
+    }
+  }
+
+  .description {
+    // ::v-deep 重写 element-plus 样式
+    &:deep(.el-descriptions__title) {
+      // ::v-deep .el-descriptions__title {
+      font-weight: 400;
+    }
+  }
 }
 </style>
